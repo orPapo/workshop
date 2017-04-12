@@ -130,6 +130,7 @@ namespace TestProject
             Assert.IsTrue(this.checkActiveGame(statusGame));
             Assert.IsTrue(this.isLogin(username));
             Assert.IsTrue(this.exitGame(game));
+            Assert.IsTrue(this.checkAvailibleSeats(game));
             //user can't exit game
             Assert.IsFalse(this.checkActiveGame(statusGame2));
             Assert.IsFalse(this.isLogin(usernameWrong));
