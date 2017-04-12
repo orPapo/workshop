@@ -16,5 +16,7 @@
         object creatGame(string gameDefinitions);
         bool isGameDefOK(string gameDefinithions);
         bool addPlayerToGame(string username, string game);
+        object selectGametoJoin(string game);
+        bool checkAvailibleSeats(string game);
     }
 }

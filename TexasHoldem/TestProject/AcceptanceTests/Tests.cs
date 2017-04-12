@@ -13,6 +13,8 @@ namespace TestProject
         string email = "gmail@gmail.com";
         string img = "img";
         string game = "Texas1";
+        string game2 = "Texas1";
+        string seatsNotAv = "none";
 
         [TestMethod]
         public void TestRegister()
@@ -87,6 +89,31 @@ namespace TestProject
             Assert.IsFalse(this.addPlayerToGame(password, game));
            
         }
+        
+        [TestMethod]
+        public void TestjoinExistingGame()
+        {
+            Assert.IsTrue(this.isLogin(username));
+            Assert.AreEqual(this.selectGametoJoin(game), this.selectGametoJoin(game2));
+            //check if the game is exist
+            Assert.AreNotEqual(this.selectGametoJoin(game), null);
+            //check for not an existing game
+            Assert.AreEqual(this.selectGametoJoin(seatsNotAv), null);
+            Assert.IsTrue(this.checkAvailibleSeats(game));
+            //no availble seats
+            Assert.IsFalse(this.checkAvailibleSeats(seatsNotAv));
+
+            Assert.IsTrue(this.addPlayerToGame(username, game));
+
+        }
+
+        [TestMethod]
+        public void TestSpectateActiveGame()
+        {
+
+        }
+
+
 
     }
 }

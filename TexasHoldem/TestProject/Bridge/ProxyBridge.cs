@@ -70,5 +70,13 @@
         {
             return true;
         }
+        public object selectGametoJoin(string game)
+        {
+            return null;
+        }
+        public bool checkAvailibleSeats(string game)
+        {
+            return true;
+        }
     }
 }

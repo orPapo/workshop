@@ -66,6 +66,14 @@
         {
             return this.addPlayerToGame(username, game);
         }
+        public  object selectGametoJoin(string game)
+        {
+            return this.selectGametoJoin(game);
+        }
+        public bool checkAvailibleSeats(string game)
+        {
+            return this.checkAvailibleSeats(game);
+        }
     }
 
 }
