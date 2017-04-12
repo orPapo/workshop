@@ -50,9 +50,22 @@
             return this.editEmail(email);
         }
 
-
-
-
+        public object creatGame(string gameDefinitions)
+        {
+            return this.creatGame(gameDefinitions);
+        }
+        public bool isLogin(string username)
+        {
+            return this.isLogin(username);
+        }
+        public bool isGameDefOK(string gameDefinithions)
+        {
+            return this.isGameDefOK(gameDefinithions);
+        }
+        public bool addPlayerToGame(string username, string game)
+        {
+            return this.addPlayerToGame(username, game);
+        }
     }
 
 }

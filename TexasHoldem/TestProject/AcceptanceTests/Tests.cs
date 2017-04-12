@@ -12,6 +12,7 @@ namespace TestProject
         string statusGame = "Active";
         string email = "gmail@gmail.com";
         string img = "img";
+        string game = "Texas1";
 
         [TestMethod]
         public void TestRegister()
@@ -55,6 +56,7 @@ namespace TestProject
         {
             //to check if there is a user in the system
             Assert.IsTrue(this.isUserExist(username, password));
+            Assert.IsTrue(this.isLogin(username));
             //to check if there is a user that can be edited ****for security policy***
             Assert.IsNotNull(this.editProfile(username));
             //to check if the user can be updated
@@ -68,10 +70,23 @@ namespace TestProject
             //check if the user name is already taken
             Assert.AreNotEqual(this.editName(username), this.isUserExist(usernameWrong,password));
 
-
         }
 
-
+        [TestMethod]
+        public void TestCreatGame()
+        {
+            //before check if user is login
+            Assert.AreNotEqual(this.login(username,password),null);
+            Assert.IsTrue(this.isLogin(username));
+            Assert.AreNotEqual(this.creatGame(game), null);
+            //check if perferneces ok
+            Assert.IsTrue(this.isGameDefOK(game));
+            Assert.IsTrue(this.addPlayerToGame(username, game));
+            //check wrong input
+            Assert.AreNotEqual(this.creatGame(password),this.creatGame(game));
+            Assert.IsFalse(this.addPlayerToGame(password, game));
+           
+        }
 
     }
 }

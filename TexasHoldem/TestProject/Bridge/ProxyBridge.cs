@@ -54,5 +54,21 @@
         {
             return true;
         }
+        public object creatGame(string gameDefinitions)
+        {
+            return null;
+        }
+        public bool isLogin(string username)
+        {
+            return true;
+        }
+        public bool isGameDefOK(string gameDefinithions)
+        {
+            return true;
+        }
+        public bool addPlayerToGame(string username, string game)
+        {
+            return true;
+        }
     }
 }
