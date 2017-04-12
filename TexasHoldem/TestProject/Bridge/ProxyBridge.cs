@@ -82,5 +82,9 @@
         {
             return false;
         }
+        public bool exitGame(string game)
+        {
+            return true;
+        }
     }
 }

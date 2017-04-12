@@ -78,6 +78,10 @@
         {
             return this.spectateActiveGame(game);
         }
+        public bool exitGame(string game)
+        {
+            return this.exitGame(game);
+        }
     }
 
 }

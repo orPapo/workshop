@@ -123,6 +123,20 @@ namespace TestProject
             Assert.AreNotEqual(this.spectateActiveGame(statusGame2), selectGametoJoin(game));
         }
 
+        [TestMethod]
+        public void TestLeaveGamw()
+        {
+            //user can exit game
+            Assert.IsTrue(this.checkActiveGame(statusGame));
+            Assert.IsTrue(this.isLogin(username));
+            Assert.IsTrue(this.exitGame(game));
+            //user can't exit game
+            Assert.IsFalse(this.checkActiveGame(statusGame2));
+            Assert.IsFalse(this.isLogin(usernameWrong));
+            Assert.IsFalse(this.exitGame(game));
+        }
+
+
 
 
     }
