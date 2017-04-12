@@ -16,6 +16,7 @@ namespace TestProject
         string game = "Texas1";
         string game2 = "Texas1";
         string seatsNotAv = "none";
+        int numOfPlayers = 5;
 
         [TestMethod]
         public void TestRegister()
@@ -124,20 +125,31 @@ namespace TestProject
         }
 
         [TestMethod]
-        public void TestLeaveGamw()
+        public void TestLeaveGame()
         {
             //user can exit game
             Assert.IsTrue(this.checkActiveGame(statusGame));
             Assert.IsTrue(this.isLogin(username));
             Assert.IsTrue(this.exitGame(game));
             Assert.IsTrue(this.checkAvailibleSeats(game));
+            Assert.IsTrue(this.removeUserFromGame(username, game) >= 0);
             //user can't exit game
+            Assert.IsFalse(this.removeUserFromGame(username, statusGame2) < 0);
             Assert.IsFalse(this.checkActiveGame(statusGame2));
             Assert.IsFalse(this.isLogin(usernameWrong));
             Assert.IsFalse(this.exitGame(game));
         }
 
+        [TestMethod]
+        public void TestReplayGame()
+        {
+            //the game is not active and exist in the system
+            Assert.IsFalse(this.checkActiveGame(statusGame2));
+            Assert.AreNotEqual(this.selectGameToReplay(statusGame2), null);
 
+            Assert.IsTrue(this.checkActiveGame(statusGame));
+
+        }
 
 
     }

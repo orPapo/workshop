@@ -82,6 +82,14 @@
         {
             return this.exitGame(game);
         }
+        public int removeUserFromGame(string user, string game)
+        {
+            return this.removeUserFromGame(user, game);
+        }
+        public object selectGameToReplay(string game)
+        {
+            return this.selectGameToReplay(game);
+        }
     }
 
 }

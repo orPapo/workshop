@@ -86,5 +86,13 @@
         {
             return true;
         }
+        public int removeUserFromGame(string user, string game)
+        {
+            return 1;
+        }
+        public object selectGameToReplay(string game)
+        {
+            return null;
+        }
     }
 }
