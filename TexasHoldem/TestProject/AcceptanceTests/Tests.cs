@@ -10,6 +10,7 @@ namespace TestProject
         string usernameWrong = "Gil";
         string password = "1234";
         string statusGame = "Active";
+        string statusGame2 = "notActive";
         string email = "gmail@gmail.com";
         string img = "img";
         string game = "Texas1";
@@ -110,7 +111,16 @@ namespace TestProject
         [TestMethod]
         public void TestSpectateActiveGame()
         {
-
+            //check user login
+            Assert.IsTrue(this.isLogin(username));
+            //check the game is active
+            Assert.IsTrue(this.checkActiveGame(statusGame));
+            //check the game is inactive
+            Assert.IsFalse(this.checkActiveGame(statusGame2));
+            //check the game is exist
+            Assert.AreNotEqual(this.selectGametoJoin(game),null);
+            Assert.AreEqual(this.spectateActiveGame(game), selectGametoJoin(game));
+            Assert.AreNotEqual(this.spectateActiveGame(statusGame2), selectGametoJoin(game));
         }
 
 

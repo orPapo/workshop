@@ -74,6 +74,10 @@
         {
             return this.checkAvailibleSeats(game);
         }
+        public bool spectateActiveGame(string game)
+        {
+            return this.spectateActiveGame(game);
+        }
     }
 
 }

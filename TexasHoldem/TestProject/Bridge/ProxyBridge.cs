@@ -78,5 +78,9 @@
         {
             return true;
         }
+        public bool spectateActiveGame(string game)
+        {
+            return false;
+        }
     }
 }
