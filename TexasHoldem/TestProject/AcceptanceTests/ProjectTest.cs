@@ -1,4 +1,6 @@
-﻿namespace TestProject
+﻿using System.Collections.Generic;
+
+namespace TestProject
 {
     public class ProjectTest
     {
@@ -89,6 +91,23 @@
         public object selectGameToReplay(string game)
         {
             return this.selectGameToReplay(game);
+        }
+        public bool isWatchingReplay(string game)
+        {
+            return this.isWatchingReplay(game);
+        }
+        public bool saveTurn(string game)
+        {
+            return this.saveTurn(game);
+        }
+       
+        public List<string> findAllActive()
+        {
+            return this.findAllActive();
+        }
+        public List<string> filterByCriteria(string criteria)
+        {
+            return this.filterByCriteria(criteria);
         }
     }
 

@@ -22,5 +22,7 @@
         bool exitGame(string game);
         int removeUserFromGame(string user, string game);
         object selectGameToReplay(string game);
+        bool isWatchingReplay(string game);
+        bool saveTurn(string game);
     }
 }

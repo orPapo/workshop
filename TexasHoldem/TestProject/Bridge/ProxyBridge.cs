@@ -1,4 +1,6 @@
-﻿namespace TestProject
+﻿using System.Collections.Generic;
+
+namespace TestProject
 {
     class ProxyBridge : Bridge
     {
@@ -91,6 +93,23 @@
             return 1;
         }
         public object selectGameToReplay(string game)
+        {
+            return null;
+        }
+        public bool isWatchingReplay(string game)
+        {
+            return true;
+        }
+        public bool saveTurn(string game)
+        {
+            return true;
+        }
+
+        public List<string> findAllActive()
+        {
+            return null;
+        }
+        public List<string> filterByCriteria(string criteria)
         {
             return null;
         }

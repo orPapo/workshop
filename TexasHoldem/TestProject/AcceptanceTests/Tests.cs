@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace TestProject
 {
@@ -16,7 +17,8 @@ namespace TestProject
         string game = "Texas1";
         string game2 = "Texas1";
         string seatsNotAv = "none";
-        int numOfPlayers = 5;
+        List<string> activeGames = new List<string>();
+        string criteria = "points";
 
         [TestMethod]
         public void TestRegister()
@@ -26,6 +28,7 @@ namespace TestProject
             Assert.AreEqual(this.register(username, password), this.getUserbyName(username));
             //check if User already registered
             Assert.IsTrue(this.isUserExist(username,password));
+            Assert.IsFalse(this.isUserExist(usernameWrong, password));
             //User enter wrong input
             Assert.AreNotEqual(this.register(username, password), this.register(usernameWrong, password));
             Assert.AreNotEqual(this.register(username, password), this.register("238///", "...."));
@@ -38,6 +41,8 @@ namespace TestProject
             Assert.AreEqual(this.login(username, password),this.getUserbyName(username));
             //Hadas not equal to another user
             Assert.AreNotEqual(this.login(username, password), this.getUserbyName(usernameWrong));
+            //Wrong input
+            Assert.AreNotEqual(this.login("1234", password), this.getUserbyName(username));
             //Hadas is already exist in the system
             Assert.IsTrue(this.isUserExist(username, password));
             //Gil didn't login yet
@@ -51,6 +56,8 @@ namespace TestProject
             //If it is an active game than user can logout
             Assert.IsTrue(this.checkActiveGame(statusGame));
             Assert.IsTrue(this.logoutUser(statusGame, username));
+            //can't logout
+            Assert.IsFalse(this.checkActiveGame(statusGame2));
 
             
         }
@@ -58,12 +65,12 @@ namespace TestProject
         [TestMethod]
         public void TestEditProfile()
         {
-            //to check if there is a user in the system
+            //check if there is a user in the system
             Assert.IsTrue(this.isUserExist(username, password));
             Assert.IsTrue(this.isLogin(username));
-            //to check if there is a user that can be edited ****for security policy***
+            //check if there is a user that can be edited ****for security policy***
             Assert.IsNotNull(this.editProfile(username));
-            //to check if the user can be updated
+            //check if the user can be updated
             Assert.IsTrue(this.editName(username));
             Assert.IsTrue(this.editImage(img));
             Assert.IsTrue(this.editEmail(email));
@@ -71,8 +78,9 @@ namespace TestProject
             Assert.IsFalse(this.editImage(username));
             Assert.IsFalse(this.editEmail(username));
             Assert.IsFalse(this.editName(img));
-            //check if the user name is already taken
+            //check if the user name is already taken or email
             Assert.AreNotEqual(this.editName(username), this.isUserExist(usernameWrong,password));
+            Assert.AreNotEqual(this.editEmail(email), this.getUserbyName(username));
 
         }
 
@@ -81,6 +89,7 @@ namespace TestProject
         {
             //before check if user is login
             Assert.AreNotEqual(this.login(username,password),null);
+            Assert.AreEqual(this.login(username,password),this.getUserbyName(username));
             Assert.IsTrue(this.isLogin(username));
             Assert.AreNotEqual(this.creatGame(game), null);
             //check if perferneces ok
@@ -150,7 +159,44 @@ namespace TestProject
             Assert.IsTrue(this.checkActiveGame(statusGame));
 
         }
+        
+        [TestMethod]
+        public void TestSaveTurns()
+        {
+            //check if the user is watching a replay
+            Assert.IsTrue(this.isWatchingReplay(game));
+            //save success
+            Assert.IsTrue(this.saveTurn(game));
+            //already saved the turn
+            Assert.IsFalse(this.saveTurn(game2));
+            //check if the replay can be saved
+            Assert.IsTrue(this.saveTurn((string)this.selectGameToReplay(statusGame)));
+            //check if the turn can be replay
+            Assert.IsTrue(this.saveTurn(game) && this.exitGame(game));
+        }
 
+        [TestMethod]
+        public void TesstFindActiveGame()
+        {
+            Assert.IsTrue(this.isLogin(username));
+            //there is at least one game that is active
+            Assert.IsTrue(this.checkActiveGame(statusGame));
+            Assert.AreEqual(this.findAllActive(), activeGames);
+            //zero games when there are noy any active games
+            Assert.IsFalse(this.checkActiveGame(statusGame2));
+            Assert.AreEqual(this.findAllActive(), statusGame2);
+        }
+
+        [TestMethod]
+        public void TestFilterActiveGame()
+        {
+            //the system was able to find a list with this criteria
+            Assert.IsTrue(this.isLogin(username));
+            Assert.AreEqual(this.filterByCriteria(criteria),activeGames);
+            Assert.AreNotEqual(this.filterByCriteria(criteria), "empty list");
+            //check if filter all active games
+            Assert.AreNotEqual(this.findAllActive(), this.filterByCriteria(criteria));
+        }
 
     }
 }
