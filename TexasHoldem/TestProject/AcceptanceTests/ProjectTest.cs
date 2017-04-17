@@ -113,6 +113,14 @@ namespace TestProject
         {
             return this.bridge.storeGameData();
         }
-    }
+        public bool isGameOver(string game, string username)
+        {
+            return this.bridge.isGameOver(game, username);
+        }
+        public object joinLeaguePerPoints(string points)
+        {
+            return this.bridge.joinLeaguePerPoints(points);
+        }
+    } 
 
 }

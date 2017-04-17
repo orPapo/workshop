@@ -1,4 +1,6 @@
-﻿namespace TestProject
+﻿using System.Collections.Generic;
+
+namespace TestProject
 {
     interface Bridge
     {
@@ -24,5 +26,12 @@
         object selectGameToReplay(string game);
         bool isWatchingReplay(string game);
         bool saveTurn(string game);
+        List<string> findAllActive();
+        List<string> filterByCriteria(string criteria);
+        bool storeGameData();
+        bool isGameOver(string game, string username);
+        object joinLeaguePerPoints(int points);
+      
+
     }
 }

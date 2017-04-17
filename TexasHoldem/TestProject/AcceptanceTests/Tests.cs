@@ -19,6 +19,10 @@ namespace TestProject
         string seatsNotAv = "none";
         List<string> activeGames = new List<string>();
         string criteria = "points";
+        string highLeague = "league #1";
+        int points = 100;
+        int points2 = 0;
+        string lowLeague = "league #10";
 
         [TestMethod]
         public void TestRegister()
@@ -205,6 +209,24 @@ namespace TestProject
             Assert.IsTrue(this.storeGameData());
 
         }
+
+        [TestMethod]
+        public void TestMaintainLeagus()
+        {
+            //check if the user added to correct league
+            Assert.IsTrue(this.isGameOver(game, username));
+            Assert.AreEqual(this.joinLeaguePerPoints(points), highLeague);
+            Assert.AreNotEqual(this.joinLeaguePerPoints(points), lowLeague);
+            //check if new user register is added to lower league
+            Assert.AreEqual(this.register(username, password), this.getUserbyName(username));
+            Assert.AreEqual(this.joinLeaguePerPoints(points2), lowLeague);
+            //check if league list deleted
+            Assert.AreNotEqual(this.joinLeaguePerPoints(points), null);
+        }
+
+
+
+
 
     }
 }

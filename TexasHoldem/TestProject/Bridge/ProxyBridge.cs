@@ -117,5 +117,13 @@ namespace TestProject
         {
             return false;
         }
+        public bool isGameOver(string game, string username)
+        {
+            return false;
+        }
+        public object joinLeaguePerPoints(string points)
+        {
+            return null;
+        }
     }
 }
