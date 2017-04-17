@@ -198,5 +198,13 @@ namespace TestProject
             Assert.AreNotEqual(this.findAllActive(), this.filterByCriteria(criteria));
         }
 
+        [TestMethod]
+        public void TestStoreGame()
+        {
+            Assert.IsTrue(this.isLogin(username));
+            Assert.IsTrue(this.storeGameData());
+
+        }
+
     }
 }

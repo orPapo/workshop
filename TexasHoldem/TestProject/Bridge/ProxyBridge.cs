@@ -113,5 +113,9 @@ namespace TestProject
         {
             return null;
         }
+        public bool storeGameData()
+        {
+            return false;
+        }
     }
 }

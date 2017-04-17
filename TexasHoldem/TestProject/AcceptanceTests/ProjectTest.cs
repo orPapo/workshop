@@ -25,89 +25,93 @@ namespace TestProject
         }
         public bool isUserExist(string username, string password)
         {
-            return this.isUserExist(username, password);
+            return this.bridge.isUserExist(username, password);
         }
         public bool checkActiveGame(string statusGame)
         {
-            return this.checkActiveGame(statusGame);
+            return this.bridge.checkActiveGame(statusGame);
         }
         public bool logoutUser(string game, string user)
         {
-            return this.logoutUser(game, user);
+            return this.bridge.logoutUser(game, user);
         }
         public object editProfile(string username)
         {
-            return this.editProfile(username);
+            return this.bridge.editProfile(username);
         }
         public bool editImage(string img)
         {
-            return this.editImage(img);
+            return this.bridge.editImage(img);
         }
         public bool editName(string name)
         {
-            return this.editName(name);
+            return this.bridge.editName(name);
         }
         public bool editEmail(string email)
         {
-            return this.editEmail(email);
+            return this.bridge.editEmail(email);
         }
 
         public object creatGame(string gameDefinitions)
         {
-            return this.creatGame(gameDefinitions);
+            return this.bridge.creatGame(gameDefinitions);
         }
         public bool isLogin(string username)
         {
-            return this.isLogin(username);
+            return this.bridge.isLogin(username);
         }
         public bool isGameDefOK(string gameDefinithions)
         {
-            return this.isGameDefOK(gameDefinithions);
+            return this.bridge.isGameDefOK(gameDefinithions);
         }
         public bool addPlayerToGame(string username, string game)
         {
-            return this.addPlayerToGame(username, game);
+            return this.bridge.addPlayerToGame(username, game);
         }
         public  object selectGametoJoin(string game)
         {
-            return this.selectGametoJoin(game);
+            return this.bridge.selectGametoJoin(game);
         }
         public bool checkAvailibleSeats(string game)
         {
-            return this.checkAvailibleSeats(game);
+            return this.bridge.checkAvailibleSeats(game);
         }
         public bool spectateActiveGame(string game)
         {
-            return this.spectateActiveGame(game);
+            return this.bridge.spectateActiveGame(game);
         }
         public bool exitGame(string game)
         {
-            return this.exitGame(game);
+            return this.bridge.exitGame(game);
         }
         public int removeUserFromGame(string user, string game)
         {
-            return this.removeUserFromGame(user, game);
+            return this.bridge.removeUserFromGame(user, game);
         }
         public object selectGameToReplay(string game)
         {
-            return this.selectGameToReplay(game);
+            return this.bridge.selectGameToReplay(game);
         }
         public bool isWatchingReplay(string game)
         {
-            return this.isWatchingReplay(game);
+            return this.bridge.isWatchingReplay(game);
         }
         public bool saveTurn(string game)
         {
-            return this.saveTurn(game);
+            return this.bridge.saveTurn(game);
         }
        
         public List<string> findAllActive()
         {
-            return this.findAllActive();
+            return this.bridge.findAllActive();
         }
         public List<string> filterByCriteria(string criteria)
         {
-            return this.filterByCriteria(criteria);
+            return this.bridge.filterByCriteria(criteria);
+        }
+        public bool storeGameData()
+        {
+            return this.bridge.storeGameData();
         }
     }
 
