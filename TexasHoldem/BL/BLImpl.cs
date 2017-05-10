@@ -6,6 +6,7 @@ using BL;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using static Backend.Game.GamePreferences;
 
 public class BLImpl : BLInterface
 {
@@ -26,11 +27,11 @@ public class BLImpl : BLInterface
 		TexasHoldemGame existingGame = dal.getGameById(gameID);
 		if (existingGame != null)
 		{
-			Spectator spec = new Spectator(user.id);
-			m = existingGame.joinSpectate(spec);
+			Player spectator = new Player(user.id);
+			m = existingGame.joinSpectate(spectator);
 			if (m.success)
 			{
-				user.addSpectatingGame(spec);
+				user.addSpectatingGame(spectator);
 			}
 			return m;
 		}
@@ -55,14 +56,14 @@ public class BLImpl : BLInterface
 			return new ReturnMessage(false, "Couldn't find the wanted game with the id:" + gameID.ToString() + ".");
 	}
 
-	public ReturnMessage leaveGame(Spectator spec, int gameID)
+	public ReturnMessage leaveGame(Player spec, int gameID)
 	{
 		ReturnMessage m = new ReturnMessage();
 		TexasHoldemGame existingGame = dal.getGameById(gameID);
 		if (spec.GetType() == typeof(Player))
 		{
 			Player p = (Player)spec;
-			existingGame.leaveGame(p);
+			existingGame.leaveGamePlayer(p);
 			SystemUser user = dal.getUserById(spec.systemUserID);
 			//TODO: what is the rank changing policy.
 			user.money += p.Tokens;
@@ -74,7 +75,7 @@ public class BLImpl : BLInterface
 		}
 		else
 		{
-			existingGame.leaveGame((Player)spec);
+			existingGame.leaveGamePlayer((Player)spec);
 		}
 		return m;
 	}
@@ -91,7 +92,7 @@ public class BLImpl : BLInterface
 			return m;
 		}
 		foreach (SystemUser u in allUsers) {
-			if (u.name.Equals(name, StringComparison.OrdinalIgnoreCase) || u.email.Equals(email, StringComparison.OrdinalIgnoreCase)) //comparing two passwords including cases i.e AbC = aBc
+			if (u.id!=userId && (u.name.Equals(name, StringComparison.OrdinalIgnoreCase) || u.email.Equals(email, StringComparison.OrdinalIgnoreCase))) //comparing two passwords including cases i.e AbC = aBc
 			{
 				m.success = false;
 				m.description = "Username or email already exists.";
@@ -153,6 +154,19 @@ public class BLImpl : BLInterface
         return m;
     }
 
+    public TexasHoldemGame createGame(int gameCreator, GameTypePolicy gamePolicy, int? buyInPolicy, int? startingChipsAmount, int? MinimalBet, int? minPlayers, int? maxPlayers, bool? isSpectatingAllowed)
+    {
+        int buyInPolicyPref = buyInPolicy.HasValue ? buyInPolicy.Value : -1;
+        int startingChipsAmountPref = startingChipsAmount.HasValue ? startingChipsAmount.Value : -1;
+        int MinimalBetPref = MinimalBet.HasValue ? MinimalBet.Value : -1;
+        int minimalPlayerPref = minPlayers.HasValue ? minPlayers.Value : -1;
+        int maximalPlayerPref = maxPlayers.HasValue ? maxPlayers.Value : -1;
+        GamePreferences pref = new GamePreferences(gamePolicy, buyInPolicyPref, startingChipsAmountPref, MinimalBetPref, minimalPlayerPref, maximalPlayerPref, isSpectatingAllowed);
+        TexasHoldemGame game = new TexasHoldemGame(gameCreator, pref);
+        dal.addGame(game);
+        return game;
+    }
+
     private ReturnMessage checkGamePreferences(GamePreferences pref)
     {
         // Check buy in policy.
@@ -206,7 +220,7 @@ public class BLImpl : BLInterface
         return new ReturnMessage(true, null);
     }
 
-    public List<TexasHoldemGame> filterActiveGamesByPotSize(int potSize)
+    public List<TexasHoldemGame> filterActiveGamesByPotSize(int? potSize)
 	{
 		List<TexasHoldemGame> ans = new List<TexasHoldemGame> { };
 		ans = dal.getAllGames();
@@ -224,7 +238,8 @@ public class BLImpl : BLInterface
 	public List<TexasHoldemGame> filterActiveGamesByGamePreferences(GamePreferences pref)
 	{
 		List<TexasHoldemGame> ans = new List<TexasHoldemGame> { };
-		foreach (TexasHoldemGame g in dal.getAllGames())
+        List<TexasHoldemGame> allGames = dal.getAllGames();
+        foreach (TexasHoldemGame g in allGames)
 		{
 			if (g.GamePreferences.Equals(pref))
 			{
@@ -234,6 +249,17 @@ public class BLImpl : BLInterface
 
 		return ans;
 	}
+
+    public List<TexasHoldemGame> filterActiveGamesByGamePreferences(GameTypePolicy gamePolicy, int buyInPolicy, int startingChipsAmount,
+                                    int MinimalBet, int minPlayers, int maxPlayers, bool? isSpectatingAllowed)
+    {
+        
+        List<TexasHoldemGame> ans = new List<TexasHoldemGame> { };
+        List<TexasHoldemGame> allGames = dal.getAllGames();
+
+        GamePreferences pref = new GamePreferences(gamePolicy, buyInPolicy, startingChipsAmount, MinimalBet, minPlayers, maxPlayers, isSpectatingAllowed);
+        return null;
+    }
 
     public List<TexasHoldemGame> getAllGames()
     {
@@ -272,7 +298,7 @@ public class BLImpl : BLInterface
 	}
 	public ReturnMessage Register(string user, string password, string email, string userImage)
 	{
-		if (user == null || password == null || email == null || userImage == null || user.Equals("") || password.Equals("") || email.Equals("") || userImage.Equals(""))
+		if (user == null || password == null || email == null || userImage == null || user.Equals("") || password.Equals("") || email.Equals("") /*|| userImage.Equals("")*/)
 			return new ReturnMessage(false, "all attributes must be filled.");
 
 		SystemUser systemUser = dal.getUserByName(user);

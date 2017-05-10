@@ -13,7 +13,7 @@ namespace Backend.Game
         public GamePreferences GamePreferences { get; }
         public Deck deck { get; }
         public Player[] players { get; set; }
-        public List<Spectator> spectators;
+        public List<Player> spectators;
         private int gameCreatorUserId;
         public int gameId { get; set; }
         public int pot { get; set; }
@@ -34,7 +34,8 @@ namespace Backend.Game
             pot = 0;
             active = true;
             deck = new Deck();
-            spectators = new List<Spectator>();
+            spectators = new List<Player>();
+            
             players = new Player[GamePreferences.MaxPlayers];
             availableSeats = GamePreferences.MaxPlayers - 1;
             Random rnd = new Random();
@@ -57,6 +58,9 @@ namespace Backend.Game
             if (AvailableSeats == 0)
                 return new ReturnMessage(false, "There are no available seats.");
 
+            if (GamePreferences.isLeague && (p.userRank < GamePreferences.MinRank || p.userRank > GamePreferences.MaxRank))
+                return new ReturnMessage(false, "The rank of the user is not standing in the league game policy.");
+
             for (int i = 0; i < GamePreferences.MaxPlayers; i++)
             {
                 if (players[i] != null && players[i].systemUserID == p.systemUserID)
@@ -65,19 +69,21 @@ namespace Backend.Game
 
             if (spectators != null)
             {
-                foreach (Spectator spec in spectators)
+                foreach (Player spec in spectators)
                     if (spec.systemUserID == p.systemUserID)
                         return new ReturnMessage(false, "Couldn't join the game because the user is already spectating the game.");
             }
+
             for (int i = 0; i < GamePreferences.MaxPlayers; i++)
             {
                 if (players[i] == null)
                 {
                     players[i] = p;
-                    GameLog.logLine(gameId, GameLog.Actions.Player_Join, p.id.ToString());
+                    GameLog.logLine(gameId, GameLog.Actions.Player_Join, p.systemUserID.ToString());
                     break;
                 }
             }
+
             return new ReturnMessage(true, "");
         }
 
@@ -95,40 +101,41 @@ namespace Backend.Game
             }
         }
 
-        public ReturnMessage joinSpectate(Spectator s)
+        public ReturnMessage joinSpectate(Player spectator)
         {
-            if (!GamePreferences.IsSpectatingAllowed)
+            if (!GamePreferences.IsSpectatingAllowed.Value)
                 return new ReturnMessage(false, "Couldn't spectate the game because the game preferences is not alowing.");
 
             foreach (Player p in players)
                 if (p != null)
                 {
-                    if (p.systemUserID == s.systemUserID)
+                    if (p.systemUserID == spectator.systemUserID)
                         return new ReturnMessage(false, "Couldn't spectate the game because the user is already playing the game.");
                 }
-            foreach (Spectator spec in spectators)
-                if (spec.systemUserID == s.systemUserID)
+
+            foreach (Player spec in spectators)
+                if (spec.systemUserID == spectator.systemUserID)
                     return new ReturnMessage(false, "Couldn't spectate the game because the user is already spectating the game.");
 
-            spectators.Add(s);
-            GameLog.logLine(gameId, GameLog.Actions.Spectate_Join, s.systemUserID.ToString());
+            spectators.Add(spectator);
+            GameLog.logLine(gameId, GameLog.Actions.Spectate_Join, spectator.systemUserID.ToString());
             return new ReturnMessage(true,"");
         }
 
-        public void leaveGame(Player p)
+        public void leaveGamePlayer(Player p)
         {
             for (int i = 0; i < GamePreferences.MaxPlayers; i++)
             {
-                if (players[i] != null && players[i].id == p.id)
+                if (players[i] != null && players[i].systemUserID == p.systemUserID)
                 {
                     players[i] = null;
-                    GameLog.logLine(gameId, GameLog.Actions.Player_Left, p.id.ToString());
+                    GameLog.logLine(gameId, GameLog.Actions.Player_Left, p.systemUserID.ToString());
                     break;
                 }
             }
         }
 
-        public void leaveGame(Spectator spec)
+        public void leaveGameSpectator(Player spec)
         {
             GameLog.logLine(gameId, GameLog.Actions.Spectate_Left, spec.systemUserID.ToString());
             spectators.Remove(spec);
@@ -261,7 +268,7 @@ namespace Backend.Game
             {
                 if (players[j] != null && players[j].playerState == Player.PlayerState.in_round)
                 {
-                    GameLog.logLine(gameId, GameLog.Actions.Small_Blind, players[j].id.ToString());
+                    GameLog.logLine(gameId, GameLog.Actions.Small_Blind, players[j].systemUserID.ToString());
                     return j;
                 }
                 j = (j + 1) % GamePreferences.MaxPlayers;
@@ -284,7 +291,7 @@ namespace Backend.Game
             {
                 if (players[j] != null && players[j].playerState == Player.PlayerState.in_round)
                 {
-                    GameLog.logLine(gameId, GameLog.Actions.Big_Blind, players[j].id.ToString());
+                    GameLog.logLine(gameId, GameLog.Actions.Big_Blind, players[j].systemUserID.ToString());
                     return j;
                 }
                 j = (j + 1) % GamePreferences.MaxPlayers;
@@ -298,14 +305,14 @@ namespace Backend.Game
             GameLog.logLine(
                 gameId, 
                 GameLog.Actions.Action_Bet, 
-                players[currentSmall].id.ToString(),
+                players[currentSmall].systemUserID.ToString(),
                 (currentBlindBet / 2).ToString());
 
             players[currentBig].Tokens -= currentBlindBet;
             GameLog.logLine(
                 gameId,
                 GameLog.Actions.Action_Bet,
-                players[currentBig].id.ToString(),
+                players[currentBig].systemUserID.ToString(),
                 (currentBlindBet / 2).ToString());
 
             tempPot += ((currentBlindBet + (currentBlindBet / 2)));
@@ -317,7 +324,7 @@ namespace Backend.Game
             GameLog.logLine(
                 gameId,
                 GameLog.Actions.Action_Bet,
-                p.id.ToString(),
+                p.systemUserID.ToString(),
                 amount.ToString());
 
             tempPot += amount;
@@ -330,7 +337,7 @@ namespace Backend.Game
             GameLog.logLine(
                 gameId,
                 GameLog.Actions.Action_Bet,
-                p.id.ToString(),
+                p.systemUserID.ToString(),
                 currentBet.ToString());
             tempPot += currentBet;
         }
@@ -341,7 +348,7 @@ namespace Backend.Game
             GameLog.logLine(
                 gameId,
                 GameLog.Actions.Action_Fold,
-                p.id.ToString());
+                p.systemUserID.ToString());
         }
 
         public void check(Player p)
@@ -349,7 +356,7 @@ namespace Backend.Game
             GameLog.logLine(
                 gameId,
                 GameLog.Actions.Action_Check,
-                p.id.ToString());
+                p.systemUserID.ToString());
         }
 
         public void raise(Player p, int amount)
@@ -358,7 +365,7 @@ namespace Backend.Game
             GameLog.logLine(
                 gameId,
                 GameLog.Actions.Action_Raise,
-                p.id.ToString(),
+                p.systemUserID.ToString(),
                 amount.ToString());
             tempPot += (amount + currentBet);
         }
