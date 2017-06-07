@@ -24,7 +24,7 @@
                         <TranslateTransform X="0.018" Y="-0.076"/>
                     </TransformGroup>
                 </StackPanel.RenderTransform>
-                <TextBox Margin="10,36,10,25.2" x:Name="username" Height="26" TextWrapping="Wrap" Width="161" RenderTransformOrigin="0.72,0.711" TextChanged="username_TextChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBox Margin="10,36,10,25.2" x:Name="username" Height="26" TextWrapping="Wrap" Width="161" RenderTransformOrigin="0.72,0.711" TextChanged="username_TextChanged" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Height="104" Margin="0,0,110.8,0" HorizontalAlignment="Right" Width="180">
                 <PasswordBox x:Name="password" Margin="10,0,10,58.8" HorizontalAlignment="Left" Width="157" Password="" Height="26" VerticalAlignment="Bottom"/>

@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="CreateGameWindow" Height="600" Width="500" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Window.Background>
+        <ImageBrush ImageSource="resources/option_window.png"/>
+    </Window.Background>
     <Grid>
         <Label Content="Please choose preferences:"></Label>
 
@@ -26,32 +29,32 @@
             </StackPanel>
             
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="290">
-                <Label Content="Buy in policy:" Margin="0,0,5,0" VerticalAlignment="Center" Width="110"/>
+                <Label Content="Buy in policy:" Margin="0,0,5,0" VerticalAlignment="Center" Width="110" FontWeight="Bold"/>
                 <TextBox Margin="10,10,10,10" x:Name="buyInTextbox" IsEnabled="True" Text="" VerticalAlignment="Center" Height="30" TextWrapping="NoWrap" Width="157"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="290">
-                <Label Content="Starting Chips:" Margin="0,0,5,0" VerticalAlignment="Center" Width="110"/>
+                <Label Content="Starting Chips:" Margin="0,0,5,0" VerticalAlignment="Center" Width="110" FontWeight="Bold"/>
                 <TextBox Margin="10,10,10,10" x:Name="startingChipsTextbox" IsEnabled="True" Text="" VerticalAlignment="Center" Height="30" TextWrapping="NoWrap" Width="157"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="290">
-                <Label Content="Minimal Bet:" Margin="0,0,5,0" VerticalAlignment="Center" Width="110"/>
+                <Label Content="Minimal Bet:" Margin="0,0,5,0" VerticalAlignment="Center" Width="110" FontWeight="Bold"/>
                 <TextBox Margin="10,10,10,10" x:Name="minimalBetTextbox" IsEnabled="True" Text="" VerticalAlignment="Center" Height="30" TextWrapping="NoWrap" Width="157"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="290">
-                <Label Content="Minimal Player:" Margin="0,0,5,0" VerticalAlignment="Center" Width="110"/>
+                <Label Content="Minimal Player:" Margin="0,0,5,0" VerticalAlignment="Center" Width="110" FontWeight="Bold"/>
                 <TextBox Margin="10,10,10,10" x:Name="minimalPlayerTextbox" IsEnabled="True" Text="" VerticalAlignment="Center" Height="30" TextWrapping="NoWrap" Width="157"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="290">
-                <Label Content="Maximal Player:" Margin="0,0,5,0" VerticalAlignment="Center" Width="110"/>
+                <Label Content="Maximal Player:" Margin="0,0,5,0" VerticalAlignment="Center" Width="110" FontWeight="Bold"/>
                 <TextBox Margin="10,10,10,10" x:Name="maximalPlayerTextbox" IsEnabled="True" Text="" VerticalAlignment="Center" Height="30" TextWrapping="NoWrap" Width="157"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="290">
-                <Label Content="Spectate allowed:" Margin="0,0,5,0" VerticalAlignment="Center" Width="110"/>
+                <Label Content="Spectate allowed:" Margin="0,0,5,0" VerticalAlignment="Center" Width="110" FontWeight="Bold"/>
                 <ComboBox Margin="10,10,10,10" x:Name="spectateAllowedTextbox" IsEnabled="True" SelectedItem="True" Text="" VerticalAlignment="Center" Height="30" Width="157" SelectedIndex="0">
                     <ComboBoxItem Content="False"/>
                     <ComboBoxItem Content="True"/>
@@ -59,7 +62,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="290">
-                <Label Content="Is League:" Margin="0,0,5,0" VerticalAlignment="Center" Width="110"/>
+                <Label Content="Is League:" Margin="0,0,5,0" VerticalAlignment="Center" Width="110" FontWeight="Bold"/>
                 <ComboBox Margin="10,15,10,10" x:Name="isLeagueTextbox" IsEnabled="True" SelectedItem="False" Text="" VerticalAlignment="Center" Height="26" Width="157" SelectedIndex="0">
                     <ComboBoxItem Content="False"/>
                     <ComboBoxItem Content="True"/>
